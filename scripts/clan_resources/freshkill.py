@@ -88,7 +88,7 @@ class FreshkillPile:
             # as a rogue group with three cats doesnt need all that
             total_num = constants.PREY_CONFIG["start_amount"]
             if game.clan:
-                if game.clan.your_cat:
+                if getattr(game.clan, 'your_cat', None):
                     if not game.clan.your_cat.status.group.is_any_clan_group():
                         total_num = (self.amount_food_needed() * 2)
             # ---

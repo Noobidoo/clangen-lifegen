@@ -37,6 +37,7 @@ class TestEventFilters(unittest.TestCase):
         game.clan.camp_bg = "camp1"
         game.clan.starting_season = "Newleaf"
         game.clan.game_mode = "classic"
+        game.clan.your_cat = None
 
         self.test_cat = create_cat(CatRank.LEADER, moons=50)
         game.clan.leader = self.test_cat

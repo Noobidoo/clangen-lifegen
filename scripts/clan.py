@@ -96,6 +96,7 @@ class Clan:
         :param displayname: The display name for the Clan, this is what should appear while the playing the game.
         """
         if name == "":
+            self.your_cat = None
             return
 
         if starting_members is None:
