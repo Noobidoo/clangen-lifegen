@@ -28,6 +28,7 @@ from scripts.game_structure import image_cache, constants
 from ..game_structure.game.switches import switch_set_value, switch_get_value, Switch
 
 from scripts.game_structure import game
+from .screens_core.screens_core import rebuild_top_menu_buttons
 from ..ui.elements.sprite_button import UISpriteButton
 from ..ui.elements.image_button import UIImageButton
 from ..ui.elements.surface_image_button import UISurfaceImageButton
@@ -4217,7 +4218,7 @@ class MakeClanScreen(Screens):
             object_id="@buttonstyles_icon_tab_left",
             manager=MANAGER,
             tool_tip_text="screens.make_clan.season_tooltip",
-            tool_tip_text_kwargs={"season": i18n.t("general.leafbare").capitalize()},
+            tool_tip_text_kwargs={"season": i18n.t("general.leaf-bare").capitalize()},
             anchors={"top_target": self.tabs["leaffall_tab"]},
         )
         # Random background
@@ -4625,6 +4626,7 @@ class MakeClanScreen(Screens):
         game.clan.save_herb_supply(game.clan)
         game.clan.grief_strings.clear()
         Cat.sort_cats()
+        rebuild_top_menu_buttons()
 
         if not game.clan.your_cat.status.group.is_any_clan_group():
             game.clan.your_cat.specsuffix_hidden = True

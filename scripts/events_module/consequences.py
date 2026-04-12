@@ -840,10 +840,20 @@ def gather_cat_objects(
         # OVERALL CLAN CATS
         elif abbr == "clan":
             found_cat_list.update(clan_cats)
+            # exclude cats involved in the event
+            found_cat_list.discard(getattr(event, "main_cat", None))
+            found_cat_list.discard(getattr(event, "random_cat", None))
+            if getattr(event, "patrol_cats", None):
+                found_cat_list.difference_update(set(event.patrol_cats))
         elif abbr == "some_clan":  # 1 / 8 of clan cats are affected
             found_cat_list.update(
                 sample(clan_cats, randint(1, max(1, round(len(clan_cats) / 8))))
             )
+            # exclude cats involved in the event
+            found_cat_list.discard(getattr(event, "main_cat", None))
+            found_cat_list.discard(getattr(event, "random_cat", None))
+            if getattr(event, "patrol_cats", None):
+                found_cat_list.difference_update(set(event.patrol_cats))
         
         # LG
         elif re.match(r"r_c:[0-9]+", abbr):  # new_cats
@@ -891,7 +901,8 @@ def gather_cat_objects(
             continue
 
         else:
-            print(f"WARNING: Unsupported abbreviation {abbr}")
+            print(f"WARNING: No cats found for {abbr_list}")
+            return list(found_cat_list)
 
     return list(out_set)
 
@@ -1009,6 +1020,7 @@ def unpack_rel_block(
                     cats_to_ob,
                     **value_changes,
                     log=to_log if to_log else from_log,
+                    flip_log=True,
                 )
             )
 
@@ -1024,6 +1036,7 @@ def change_relationship_values(
     comfort: int = 0,
     trust: int = 0,
     log: str = None,
+    flip_log: bool = False,
 ) -> dict:
     """
     changes relationship values according to the parameters.
@@ -1038,6 +1051,7 @@ def change_relationship_values(
     :param int comfort: amount to change comfort, default 0
     :param int trust: amount to change trust, default 0
     :param str log: the string to append to the relationship log of cats involved
+    :param bool flip_log: If True, this will "flip" the cats used for cat_to and cat_from abbreviation replacements. This should really only be used for mutual relationship changes from events.
     """
 
     # This is just for test prints - DON'T DELETE - you can use this to test if relationships are changing
@@ -1088,15 +1102,17 @@ def change_relationship_values(
                 log = i18n.t("relationships.relationship_log")
             if log and isinstance(log, str):
                 replace_dict = {}
-                if "from_cat" in log:
-                    replace_dict["from_cat"] = (
-                        str(single_cat_from.name),
-                        choice(single_cat_from.pronouns),
+                cat_from = single_cat_to if flip_log else single_cat_from
+                cat_to = single_cat_from if flip_log else single_cat_to
+                if "cat_from" in log:
+                    replace_dict["cat_from"] = (
+                        str(cat_from.name),
+                        choice(cat_from.pronouns),
                     )
-                if "to_cat" in log:
-                    replace_dict["to_cat"] = (
-                        str(single_cat_to.name),
-                        choice(single_cat_to.pronouns),
+                if "cat_to" in log:
+                    replace_dict["cat_to"] = (
+                        str(cat_to.name),
+                        choice(cat_to.pronouns),
                     )
                 if replace_dict:
                     processed_log = process_text(log, replace_dict)
@@ -1112,8 +1128,8 @@ def change_relationship_values(
 
                 log_text = processed_log + i18n.t(
                     "relationships.age_postscript",
-                    name=str(single_cat_to.name),
-                    count=single_cat_to.moons,
+                    name=str(single_cat_from.name),
+                    count=single_cat_from.moons,
                 )
                 if log_text not in rel.log:
                     rel.log.append(log_text)

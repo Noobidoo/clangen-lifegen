@@ -56,7 +56,7 @@ For `cats_from` and `cats_to` you may use any of cat abbreviations already utili
 | `high_aggress` | Use in conjunction with other tags to constrain the affected cats. **It cannot be used alone.** All player Clan cats with a 9-16 aggression facet are affected. MUST BE LISTED AFTER NON-FACET TAGS. |
 
 !!! tip
-    To *exclude* certain cats from the relationship change, you can utilize any of these abbreviations as an [exclusionary value](#exclusionary-values)! So, for example, you could write `["patrol", "-p_l", "-app1"]` to affect the entire patrol *except* `p_l` and `app1`. Keep in mind that the order of abbreviations matters here! You can only *remove* cats from previously stated groups. So if we were to reverse the previous example like this: `["-p_l", "-app1", "patrol"]`, then it wouldn't work correctly, as `patrol` is being stated last and the code didn't know what group to remove `p_l` and `app1` from. 
+    To *exclude* certain cats from the relationship change, you can utilize any of these abbreviations as an [exclusionary tag](tag-lists.md/#exclusionary-tags)! So, for example, you could write `["patrol", "-p_l", "-app1"]` to affect the entire patrol *except* `p_l` and `app1`. Keep in mind that the order of abbreviations matters here! You can only *remove* cats from previously stated groups. So if we were to reverse the previous example like this: `["-p_l", "-app1", "patrol"]`, then it wouldn't work correctly, as `patrol` is being stated last and the code didn't know what group to remove `p_l` and `app1` from. 
 
 ### mutual:bool
 Optional. Controls if the relation effect will be applied in both directions. Defaults to False.
@@ -84,7 +84,7 @@ The amount that the chosen relationship types will change by. 8 is a low amount,
 The string that will display within the relationship logs. A string can be specified for both the `cats_from` and `cats_to` groups. 
 
 !!! tip "Writing Logs"
-    When writing a log string, you can utilize the same abbreviations that you have already used within the event format. You can also use the abbreviations `from_cat` and `to_cat` to utilize names and pronouns for individual cats within their respective groups, which is handy when you've indicated a change should occur across multiple cats. For example: "to_cat was part of the patrol that invited n_c:0 to c_n." would appear in the log as "PatrolCat was part of the patrol that invited NewCat to ExampleClan."
+    When writing a log string, you can utilize the same abbreviations that you have already used within the event format. You can also use the abbreviations `cat_from` and `cat_to` to utilize names and pronouns for individual cats within their respective groups, which is handy when you've indicated a change should occur across multiple cats. For example: "cat_to was part of the patrol that invited n_c:0 to c_n." would appear in the log as "PatrolCat was part of the patrol that invited NewCat to ExampleClan."
 
 ```json
 "log": {

@@ -4,8 +4,12 @@ from typing import TYPE_CHECKING, Optional
 
 import i18n
 
-from scripts.cat.enums import CatGroup, CatThought, CatRank, CatAge
-from scripts.events_module.event_filters import event_for_cat
+from scripts.cat.enums import CatGroup, CatThought, CatAge
+from scripts.events_module.event_filters import (
+    event_for_cat,
+    event_for_location,
+    event_for_season,
+)
 from scripts.game_structure import game
 from scripts.game_structure.localization import load_lang_resource
 from scripts.events_module.event_filters import filter_relationship_type
@@ -52,11 +56,16 @@ def get_other_cat_for_thought(
             (
                 other_cat.dead and not thinking_of_dead_cat
             )  # dead and thought isn't about dead cat
+            or not main_cat.relationships.get(
+                other_cat.ID
+            )  # no existing relationship at all
             or (
                 main_cat.relationships.get(other_cat.ID)
                 and main_cat.relationships[other_cat.ID].total_relationship_value == 0
-            )  # the two cats have no existing relationship
+            )  # the main_cat has an empty relationship toward other_cat
             or other_cat.status.is_lost()  # other cat is lost
+            or other_cat.status.group_ID
+            != main_cat.status.group_ID  # must have matching group
         ):
             cat_list.remove(other_cat)
 
@@ -70,22 +79,18 @@ def get_other_cat_for_thought(
     return other_cat
 
 
-def _filter_list(
-    inter_list: list, main_cat: "Cat", other_cat: "Cat", biome, season, camp
-) -> list:
+def _filter_list(inter_list: list, main_cat: "Cat", other_cat: "Cat") -> list:
     """
     Filters thoughts in the inter_list per their constraints and returns a list of allowed thoughts.
     """
     created_list = []
     for inter in inter_list:
-        if _constraints_fulfilled(main_cat, other_cat, inter, biome, season, camp):
+        if _constraints_fulfilled(main_cat, other_cat, inter):
             created_list.append(inter)
     return created_list
 
 
-def _load_group(
-    thought_type: CatThought, main_cat: "Cat", other_cat: "Cat", biome, season, camp
-):
+def _load_group(thought_type: CatThought, main_cat: "Cat", other_cat: "Cat"):
     """
     Loads and returns thoughts appropriate for the given args.
     """
@@ -187,7 +192,7 @@ def _load_group(
         thoughts = load_lang_resource(f"{new_path}/{main_cat.status.group}.json")
         pass
 
-    final_thoughts = _filter_list(thoughts, main_cat, other_cat, biome, season, camp)
+    final_thoughts = _filter_list(thoughts, main_cat, other_cat)
 
     return final_thoughts
 
@@ -224,15 +229,13 @@ def _load_clancat(main_cat: "Cat", path) -> list:
     Returns clancat thoughts if the cat is a clancat
     """
     # newborns don't receive general thoughts
-    if main_cat.status.is_clancat:
+    if main_cat.status.is_clancat and main_cat.age != CatAge.NEWBORN:
         return load_lang_resource(f"{path}/clancat.json")
 
     return []
 
 
-def new_thought(
-    thought_type: CatThought, main_cat: "Cat", other_cat: "Cat", biome, season, camp
-):
+def new_thought(thought_type: CatThought, main_cat: "Cat", other_cat: "Cat"):
     """
     Finds a thought appropriate for the given args.
     """
@@ -245,7 +248,7 @@ def new_thought(
             return i18n.t("defaults.rickroll")
         else:
             chosen_thought_group = choice(
-                _load_group(thought_type, main_cat, other_cat, biome, season, camp)
+                _load_group(thought_type, main_cat, other_cat)
             )
 
             chosen_thought = choice(chosen_thought_group["thoughts"])
@@ -260,9 +263,6 @@ def new_thought(
 def new_death_thought(
     main_cat: "Cat",
     other_cat: "Cat",
-    biome,
-    season,
-    camp,
     afterlife,
     lives_left,
 ):
@@ -283,9 +283,7 @@ def new_death_thought(
             loaded_thoughts = load_lang_resource(
                 f"thoughts/on_death/{afterlife}/general.json"
             )
-        thought_group = choice(
-            _filter_list(loaded_thoughts, main_cat, other_cat, biome, season, camp)
-        )
+        thought_group = choice(_filter_list(loaded_thoughts, main_cat, other_cat))
         chosen_thought = choice(thought_group["thoughts"])
         return chosen_thought
 
@@ -294,21 +292,15 @@ def new_death_thought(
         return i18n.t("defaults.thought")
 
 
-def _constraints_fulfilled(
-    main_cat: "Cat", random_cat: "Cat", thought, biome, season, camp
-) -> bool:
+def _constraints_fulfilled(main_cat: "Cat", random_cat: "Cat", thought) -> bool:
     """Check if thought constraints are fulfilled"""
 
     if "biome" in thought:
-        if biome not in thought["biome"]:
+        if not event_for_location(thought["biome"]):
             return False
 
     if "season" in thought:
-        if season not in thought["season"]:
-            return False
-
-    if "camp" in thought:
-        if camp not in thought["camp"]:
+        if not event_for_season(thought["season"]):
             return False
 
     if "not_working" in thought:
@@ -414,7 +406,7 @@ def _constraints_fulfilled(
         if "m_c" in thought["has_injuries"]:
             if main_cat.injuries or main_cat.illnesses:
                 injuries_and_illnesses = list(main_cat.injuries.keys()) + list(
-                    main_cat.injuries.keys()
+                    main_cat.illnesses.keys()
                 )
                 if (
                     not [
@@ -431,7 +423,7 @@ def _constraints_fulfilled(
         if "r_c" in thought["has_injuries"] and random_cat:
             if random_cat.injuries or random_cat.illnesses:
                 injuries_and_illnesses = list(random_cat.injuries.keys()) + list(
-                    random_cat.injuries.keys()
+                    random_cat.illnesses.keys()
                 )
                 if (
                     not [

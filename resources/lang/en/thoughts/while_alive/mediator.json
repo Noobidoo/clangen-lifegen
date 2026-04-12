@@ -153,11 +153,12 @@
     {
         "id": "loving_mediator",
         "thoughts": [
-            "Wonders why everycat can't just get along",
+            "Wonders why everyone can't just get along",
             "Sees all sides of the argument",
-            "Prioritizes every cats feelings",
+            "Prioritizes every cat's feelings",
             "Is quick to comfort other cats and give advice",
-            "Tries {PRONOUN/m_c/poss} best to give relationship advice to a couple who's struggling"
+            "Tries {PRONOUN/m_c/poss} best to give relationship advice to a couple who's struggling",
+            "Considers {PRONOUN/m_c/self} an expert on matters of the heart"
         ],
         "main_trait_constraint": [
             "loving"

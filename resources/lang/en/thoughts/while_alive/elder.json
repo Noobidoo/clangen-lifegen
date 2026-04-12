@@ -109,7 +109,7 @@
         "id": "arrogant_elder",
         "thoughts": [
             "Yells at anycat within earshot to bring {PRONOUN/m_c/object} fresh moss",
-            "Is telling stories - only about {PRONOUN/m_c/self}, of course",
+            "Is telling stories — only about {PRONOUN/m_c/self}, of course",
             "Doesn't thank the apprentices who help {PRONOUN/m_c/object} clean {PRONOUN/m_c/poss} nest"
         ],
         "main_age_constraint": [
