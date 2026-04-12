@@ -41,6 +41,10 @@ class UIImageButton(pygame_gui.elements.UIButton):
         self.sound_id = sound_id
         self.mask_padding = mask_padding if mask_padding is not None else 2
         self.mask_info = [relative_rect[0:2], []]
+        self.normal_image = None
+        self.hovered_image = None
+        self.selected_image = None
+        self.disabled_image = None
 
         super().__init__(
             relative_rect=relative_rect,

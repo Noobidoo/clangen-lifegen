@@ -2,7 +2,7 @@ import pygame
 import re
 from random import choice
 from .Screens import Screens
-from scripts.game_structure.audio import sound_manager
+from scripts.game_structure import game
 
 from scripts.cat.cats import Cat
 from scripts.game_structure import image_cache
@@ -489,7 +489,7 @@ class TalkScreen(Screens):
                     self.create_choice_buttons()
                 if not self.meow:
                     if "[" not in self.texts[self.text_index]:
-                        sound_manager.play("meow")
+                        game.audio.sound.play("meow")
                     # this plays One meow sound effect at the end of dialogue
                     self.meow = True
                     self.paw.visible = True

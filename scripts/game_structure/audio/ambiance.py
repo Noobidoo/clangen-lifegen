@@ -236,9 +236,11 @@ class Ambiance:
         try:
             camp: str = game.clan.camp_bg
             index = int([x for x in camp if x.isdigit()][0]) - 1
+            index = min(index, len(constants.CAMPS.get(biome, [])) - 1)
+            index = max(index, 0)
             camp = constants.CAMPS[biome][index]
-        except AttributeError:
-            camp = constants.CAMPS[biome][0]
+        except (AttributeError, IndexError, ValueError):
+            camp = constants.CAMPS.get(biome, list(constants.CAMPS.values())[0])[0]
 
         try:
             season = game.clan.current_season

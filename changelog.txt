@@ -1,3 +1,120 @@
+<strong>v0.7.7 (Upstream Sync Update): </strong>
+
+Merged upstream ClanGen development branch. This is a large sync bringing in 150+ upstream commits.
+
+--- Upstream Changes (from ClanGen development) ---
+
+New Features & Enhancements:
+- Transgender kittens support (#4464)
+- Medicine cat apprentice odds rebalancing (#4340)
+- Split white patch sprite sheets for better organization (#4493)
+- Discord integration bugfix & improvements (#4699)
+- Improved relationship conversion system (#4661)
+- Debug event functionality with new_cat debug events (#4379)
+- Added sum of absolute values display for RelationshipScreen (#4649)
+- Frequency override and un-involved cats handling (#4514)
+- Exclusionary backstory tags support
+- Negative leaning reactions to pregnancy events
+- Bridge camp added with new camp assets (#4702)
+
+New Content:
+- Patrol sprites for various biomes (#4606)
+- Picnic heist patrol - Beach hunting greenleaf (#4654)
+- Salmon run patrol - Mountain leaf-fall hunting (#4625)
+- Coconut crab beach border patrol (leaf-fall)
+- New outcomes and art for common training patrols (#4664)
+- New group events for group 5 negative interactions
+- Romantic jealousy relationship events (#4685)
+- New condition: "Breathless Fit" (#4662)
+- New mysterious deaths and med mess-up deaths (#4711)
+- Unique med patrols with relationship logs (#4577)
+- Disaster patrol relationship logs (#4641)
+- Desert training relationship logs for greenleaf and leaf-bare (#4640)
+- Medicine cat newleaf relationship logs (#4608)
+- Mountain med leaf-bare relationship logs (#4626)
+- Beach med relationship logs (#4612)
+- Other clan hostile relationship logs (#4590)
+- Kitten littermate relationship logs (#4666)
+- Short event relationship logs (#4668)
+- Mutual relationship logs (#4658)
+- Damaged throat risk strings + reworded death event (#4730)
+
+Audio:
+- Full ambiance sound system with biome-specific audio (beach, forest, mountainous, plains)
+- Seasonal ambient sounds (greenleaf cicadas/crickets/thunderstorm, leaf-bare geese/wind, etc.)
+- Menu ambiance track
+- Fixed audio duping bug (#4574)
+- Fixed weirdly long silence time
+
+Documentation:
+- Set up blog for docs (#4734)
+- Added documentation on how to cut a release (#4693)
+- Updated sprite, audio, and writing documentation
+
+Bugfixes:
+- Temporarily disabled auto-updater (#4745)
+- Death fixes and accurate death text across all biome patrols (#4743, #4642-#4646)
+- Facet/Pronoun errors (#4741)
+- Fixed missing "Absent" in scarless_conditions (#4716)
+- Fixed dead_for being much longer than dead_moons (#4682)
+- Fixed patrol dead tag handling (#4736)
+- Permanent condition events now display correct cats involved (#4723)
+- UR underlay not displaying (#4726)
+- History text related to deaths caused by permanent conditions (#4701)
+- Fixed broken apprentice plains border patrol (#4632)
+- Fixed broken med cat patrol (#4707)
+- Sprite fixes: LITTLE, PRINCESS alignment, HEARTBEAT, POWDER, fullwhite display, tortie/calico, eyes (#4598, #4708)
+- Fixed shader sprite reset
+- Fixed classic mode menu (#4660)
+- Clan-targeting focuses (#4569)
+- Relationship log window fixes (#4565)
+- Newborn thoughts (#4495)
+- Window bugs and patrol relationships (#4496)
+- April fools on Halloween (#4570)
+- Allegiances fix for plain torties (#4529)
+- Thoughts filtering (#4516)
+- Intensity tagging (#4584)
+- Fix hoarding prey count in log (#4601)
+- Fix death history abbreviation (#4531)
+- Untagged verb in exile string (#4588)
+- Tick fever localization and edits (#4627, #4715)
+- Fix overlap of med_info with navigation arrows (#4676)
+- Relationship event warnings (#4597)
+- Solo patrols fix (#4604)
+- Duplicated encounter message fix (#4605)
+- Fix untagged med_cat in condition events (#4579)
+- Make other_clan match group of new_cat (#4586)
+- Little mistakes (#4721)
+- Negative relationship impact for mistake events (#4600)
+- Outsider rank change crash fix
+- Fallback clan name fix
+- Logging and file emptying improvements (#4578)
+- Tag fixes across multiple files
+
+Cleanup:
+- Like events review (#4576)
+- Medicine cat leaf-bare patrol cleanup (#4637)
+- Standardized relationship logs (#4639)
+- Subdivided event categories (#4614)
+- Regularized dashes across lang files (#4672)
+- General balancing (#4683)
+
+Testing:
+- Added partial event_filtering tests (#4437)
+- Fixed test framework for skills, traits, ages, statuses, backstories, and relationships
+
+--- LifeGen-specific Changes ---
+
+Fixes:
+- Reverted em-dashes to plain hyphens across 129 lang files to maintain consistency with LifeGen formatting (1,626 lines changed)
+- Fixed test state pollution: guarded your_cat attribute access for bare Clan objects
+  - scripts/cat/cats.py: safe attribute access
+  - scripts/clan.py: added your_cat initialization
+  - scripts/clan_resources/freshkill.py: guarded access
+  - tests/test_event_filters.py: added missing setup
+
+Stats: 396 files changed, 51,294 insertions, 141,217 deletions
+
 <strong>v0.7.6: </strong>
 
 Changes/Additions:

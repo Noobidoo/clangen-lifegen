@@ -156,7 +156,7 @@ class StartScreen(Screens):
 
         # start menu music if it isn't already playing
         # this is the only screen that has to check its own music, other screens handle that in the screen change
-        music_manager.check_music(GameScreen.START)
+        game.audio.music.check()
 
         bg = pygame.image.load(self.choose_random_menu("resources/menus")).convert()
         if game_setting_get("dark mode"):
