@@ -2,6 +2,7 @@ import pygame_gui
 from pygame_gui.core.gui_type_hints import RectLike
 
 from scripts.ui.scale import ui_scale_value
+from pygame_gui.core.interfaces import IContainerLikeInterface
 
 
 class UIModifiedHorizScrollBar(pygame_gui.elements.UIHorizontalScrollBar):
@@ -31,3 +32,8 @@ class UIModifiedHorizScrollBar(pygame_gui.elements.UIHorizontalScrollBar):
         self.sliding_button.change_layer(starting_height + 1)
 
         self.rebuild()
+
+    def set_container_to_check_hover_for_mousewheel_events(
+        self, container: IContainerLikeInterface
+    ):
+        super().set_container_to_check_hover_for_mousewheel_events(container)

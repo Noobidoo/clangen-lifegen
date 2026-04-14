@@ -94,6 +94,11 @@ class UIImageVerticalScrollBar(pygame_gui.elements.UIVerticalScrollBar):
         super().set_visible_percentage(percentage)
         self.scroll_wheel_speed = (1 / self.visible_percentage) * ui_scale_value(15)
 
+    def set_container_to_check_hover_for_mousewheel_events(
+        self, container: IContainerLikeInterface
+    ):
+        super().set_container_to_check_hover_for_mousewheel_events(container)
+
     def _check_should_handle_mousewheel_event(self) -> bool:
         def recursive_check_if_ignore(element):
             """
